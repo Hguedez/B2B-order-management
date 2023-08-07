@@ -1,27 +1,27 @@
---INVENTARIO
-SET IDENTITY_INSERT B2B.Inventario ON;
+--INVENTORY
+SET IDENTITY_INSERT B2B.TCInventory ON;
 
-INSERT INTO B2B.Inventario(
-	Inventario_Id,
-	Cantidad	
+INSERT INTO B2B.TCInventory(
+	Inventory_Id,
+	Quantity	
     )
 VALUES 
 (1,20),
 (2,6),
 (3,55),
 (4,10),
-(5,1)
+(5,0)
 
-SET IDENTITY_INSERT B2B.Inventario OFF;
+SET IDENTITY_INSERT B2B.TCInventory OFF;
 
---PRODUCTO
-SET IDENTITY_INSERT B2B.Producto ON;
+--PRODUCT
+SET IDENTITY_INSERT B2B.TCProduct ON;
 
-INSERT INTO B2B.Producto(
-	Producto_Id,
-	Nombre_Producto,
-	Descripcion,
-	FK_Inventario_Id
+INSERT INTO B2B.TCProduct(
+	Product_Id,
+	Product_Name,
+	Description,
+	FK_Inventory_Id
 	)
 VALUES 
 (1,'Desodorante','El Antitranspirante Roll Farmatodo mantiene su piel seca, dando protección continua.',1),
@@ -30,39 +30,39 @@ VALUES
 (4,'Refresco','Refresco sabor a cola negra 2lts',4),
 (5,'Snack Doritos Mega Queso','Hojuelas de maíz tostadas con sabor a queso',5)
 
-SET IDENTITY_INSERT B2B.Producto OFF;
+SET IDENTITY_INSERT B2B.TCProduct OFF;
 
---USUARIO
-SET IDENTITY_INSERT B2B.Usuario ON;
+--USER
+SET IDENTITY_INSERT B2B.TCUser ON;
 
-INSERT INTO B2B.Usuario(
-	Usuario_Id,
-	Primer_Nombre,
-    Primer_Apellido,
-    Telefono,
+INSERT INTO B2B.TCUser(
+	User_Id,
+	First_Name,
+    Family_Name,
+    Telephone,
     Email,
-    Clave,
+    Password,
     Rol	
     )
 VALUES 
 (1,'Hilery', 'Guedez', '9323321', 'hileryguedez@gmail.com', '123456', 'user'),
 (2,'Alejandro', 'Melendez', '1378301', 'amelendez@tribuco.mx', '123456', 'admin')
 
-SET IDENTITY_INSERT B2B.Usuario OFF;
+SET IDENTITY_INSERT B2B.TCUser OFF;
 
---ORDEN
-SET IDENTITY_INSERT B2B.Orden ON;
+--ORDER
+SET IDENTITY_INSERT B2B.TCOrder ON;
 
-INSERT INTO B2B.Orden(
-	Orden_Id,
-    Cantidad_Ordenada,
-	Fecha_Orden,
-    FK_Usuario_Id,
-    FK_Producto_Id
+INSERT INTO B2B.TCOrder(
+	Order_Id,
+    Order_Quantity,
+	Order_Date,
+    FK_User_Id,
+    FK_Product_Id
     )
 VALUES 
 (1, 12, '2023-08-06', 1, 1),
 (2, 1, '2023-08-07', 2, 2),
 (3, 5, '2023-08-07', 2, 4)
 
-SET IDENTITY_INSERT B2B.Orden OFF;
+SET IDENTITY_INSERT B2B.TCOrder OFF;
