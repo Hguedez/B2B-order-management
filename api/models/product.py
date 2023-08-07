@@ -1,11 +1,12 @@
 from django.db import models
+from api.models.inventory import Inventory
 
 class Product(models.Model):
-    Producto_Id = models.AutoField(primary_key=True)
-    Nombre_Producto = models.CharField(max_length=100)
-    Descripcion = models.CharField(max_length=500)
-    FK_Inventario_Id = models.IntegerField(null=True)
+    Product_Id = models.AutoField(primary_key=True)
+    Product_Name = models.CharField(max_length=100)
+    Description = models.CharField(max_length=500, null=True)
+    FK_Inventory_Id = models.ForeignKey(Inventory, on_delete=models.CASCADE, null=True, db_column='FK_Inventory_Id')
 
     class Meta:
         managed = True
-        db_table = "[B2B].[Producto]"
+        db_table = "[B2B].[TCProduct]"
