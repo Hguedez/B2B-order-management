@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'header.html' %}
+    <title>Mis pedidos</title>
+    <style>
+        :root {
+            --main-font: 'Nunito Sans', sans-serif;
+            --main-color: #1d3557;
+            --main-hover: #457b9d;
+        }
+        .color-tc-primary{
+            text-decoration: none !important;
+            color: var(--main-color);
+        }
+        .rounded-pill-cart {
+            border-radius: 50rem ;
+        }
+    </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container-fluid ">
+    <div id="orders-list" class="row d-flex justify-content-center">
+        <h3 class="w-75 mt-3">Mis pedidos</h3>
+    </div>
+</div>
+{% include 'footer.html' %}
+<script>
+ 
+    let page_number = 1
+    let email = 'amelendez@tribuco.mx'
+    let shopCart = JSON.parse(localStorage.getItem('cart'))
+    $( document ).ready(function() {
+        getUserOrders()
+
+    });
+
+    function getUserOrders(){
+        var ordersHTML = []
+        var orders = {}
+        var product = {}
+        $.ajax({
+            url: 'http://127.0.0.1:8000/get-user-orders/'+page_number+'/user/'+email,
+            type: 'GET',
+            success: function(response) {
+                orders = response.data
+                for(let ord in orders){
+                    product = orders[ord].Product
+                    ordersHTML[ord] = `
+                    <div class="card w-75 mt-3">
+                        <div class="card-body ">
+                            <h5 class="card-title">Producto: ${product.Product_Name}</h5>
+                            <p class="card-text">Fecha: ${orders[ord].Order_Date}</p>
+                            <p class="card-text">Cantidad: ${orders[ord].Order_Quantity}</p>
+                        </div>
+                    </div>
+                    `
+                }
+                $('#orders-list').append(ordersHTML);
+            },
+            error: function(xhr, status, error) {
+                // handle error
+            }
+        });
+    }
+
+    function addToCart(product_name){ 
+               
+        var cardItems = {productName: product_name};
+        cardItems = $('.rounded-pill-cart').text()
+        console.log($('.rounded-pill-cart').text())
+        localStorage.setItem('cart', JSON.stringify(cardItems));
+    }
+    
+</script>
+</body>
+</html>

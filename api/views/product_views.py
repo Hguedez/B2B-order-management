@@ -97,7 +97,7 @@ def update_product(request):
     """
     if request.method == 'PUT':
         json_data = JSONParser().parse(request)
-        Product.objects.filter(Product_Id=json_data['Product']['Product_Id']).update(Product_Name=json_data['Product']['Product_Name'],Description=json_data['Product']['Description'],FK_Inventory_Id=json_data['Product']['FK_Inventory_Id'])        
+        Product.objects.filter(Product_Id=json_data['Product']['Product_Id']).update(Product_Name=json_data['Product']['Product_Name'],Description=json_data['Product']['Description'],FK_Inventory_Id=json_data['Product']['FK_Inventory_Id'],Price=json_data['Product']['Price'])        
         return JsonResponse({'response': 'success','message': 'Producto actualizado exitosamente'}, safe=False)
 
 @csrf_exempt
@@ -117,3 +117,4 @@ def remove_product(request, product_id):
             return JsonResponse({'response': 'success', 'message': 'Producto eliminado existosamente'}, safe=False)
         except Product.DoesNotExist:
             return JsonResponse({'response': 'error', 'message': 'Hubo un error intente nuevamente'}, safe=False)
+        

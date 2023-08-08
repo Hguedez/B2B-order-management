@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'header.html' %}
+    <title>Carrito</title>
+    <style>
+        :root {
+            --main-font: 'Nunito Sans', sans-serif;
+            --main-color: #1d3557;
+            --main-hover: #457b9d;
+        }
+        .color-tc-primary{
+            text-decoration: none !important;
+            color: var(--main-color);
+        }
+        .rounded-pill-cart {
+            border-radius: 50rem ;
+        }
+        #orders-list > .card {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .btn-pay{
+            display: inline-block;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            text-align: center;
+            text-decoration: none;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            background-color: var(--main-color);
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            border-radius: 0.25rem;
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            text-transform: unset;
+            box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%) !important;
+        }
+    </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container-fluid ">
+    <div class="row">
+        <h3 class="col-12 mt-3">Carrito</h3>
+    </div>
+    <div class="row">
+        <div id="orders-list" class="col-12 col-lg-7 col-md-7 d-flex flex-column align-items-center">
+        </div>
+        <div id="price-card" class="col-12 col-lg-4 col-md-4 mt-3">
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
+<script>
+ 
+    let page_number = 1
+    let email = 'amelendez@tribuco.mx'
+    let shopCart = JSON.parse(localStorage.getItem('cart'))
+    $( document ).ready(function() {
+        getCartItems()
+
+    });
+
+    function getCartItems(){
+        var ordersHTML = []
+        var orders = {}
+        var product = {}
+        var priceHTML = ''
+        var price = 0
+        $.ajax({
+            url: 'http://127.0.0.1:8000/get-cart-items/'+1,
+            type: 'GET',
+            success: function(response) {
+                orders = response.data
+                for(let ord in orders){
+                    price+=parseInt(orders[ord].Product.Price)
+                    product = orders[ord].Product
+                    ordersHTML[ord] = `
+                    <div class="card col-12 mt-3">
+                        <div class="card-body ">
+                            <h5 class="card-title">Producto: ${product.Product_Name}</h5>
+                            <p class="card-text">Descripcion: ${product.Description}</p>
+                            <p class="card-text">Cantidad: ${orders[ord].Cart_Quantity}</p>
+                        </div>
+                    </div>
+                    `
+                }
+                priceHTML = `
+                <div class="card col-12">
+                    <div class="card-body ">
+                        <h4 class="card-title text-center mb-3">Resumen del pedido</h4>
+                        <h5>Total a pagar: ${price}$</h5>
+                        <button type="button" class="btn btn-pay btn-block text-white">Pagar</button>
+                    </div>
+                </div>
+                `
+                $('#orders-list').append(ordersHTML);
+                $('#price-card').append(priceHTML);
+            },
+            error: function(xhr, status, error) {
+                // handle error
+            }
+        });
+    }
+
+    function addToCart(product_name){ 
+               
+        var cardItems = {productName: product_name};
+        cardItems = $('.rounded-pill-cart').text()
+        console.log($('.rounded-pill-cart').text())
+        localStorage.setItem('cart', JSON.stringify(cardItems));
+    }
+    
+</script>
+</body>
+</html>

@@ -10,6 +10,7 @@ CREATE TABLE B2B.TCProduct (
     Product_Id INT NOT NULL IDENTITY PRIMARY KEY,
     Product_Name nvarchar(100) UNIQUE NOT NULL,
     Description nvarchar(500),
+    Price MONEY,
     FK_Inventory_Id INT,
     CONSTRAINT FK_Producto_Inventory FOREIGN KEY (FK_Inventory_Id)
     REFERENCES B2B.TCInventory(Inventory_Id)
@@ -33,11 +34,26 @@ CREATE TABLE B2B.TCOrder (
     Order_Quantity INT NOT NULL, 
     FK_User_Id INT,
     FK_Product_Id INT,
-    CONSTRAINT FK_Orden_Usuario FOREIGN KEY (FK_User_Id)
+    CONSTRAINT FK_Order_User FOREIGN KEY (FK_User_Id)
     REFERENCES B2B.TCUser(User_Id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
     CONSTRAINT FK_Order_Product FOREIGN KEY (FK_Product_Id)
+    REFERENCES B2B.TCProduct(Product_Id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE B2B.TCShopping_Cart (
+    Cart_Id INT NOT NULL IDENTITY PRIMARY KEY,
+    Cart_Quantity INT,
+    FK_User_Id INT,
+    FK_Product_Id INT,
+    CONSTRAINT FK_ShoppingCt_User FOREIGN KEY (FK_User_Id)
+    REFERENCES B2B.TCUser(User_Id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_ShoppingCt_Product FOREIGN KEY (FK_Product_Id)
     REFERENCES B2B.TCProduct(Product_Id)
     ON DELETE CASCADE
     ON UPDATE CASCADE

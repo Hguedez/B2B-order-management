@@ -21,14 +21,15 @@ INSERT INTO B2B.TCProduct(
 	Product_Id,
 	Product_Name,
 	Description,
+    Price,
 	FK_Inventory_Id
 	)
 VALUES 
-(1,'Desodorante','El Antitranspirante Roll Farmatodo mantiene su piel seca, dando protección continua.',1),
-(2,'Crema Dental','Protege tu salud bucal y la de toda tu familia, brindándoles la confianza que necesitan, manteniendo un aliento súper fresco por mucho más tiempo',2),
-(3,'Cepillo Dental','Proporciona una limpieza profunda y genera espuma superior al mismo tiempo. Su diseño innovador incluye un mango ergonómico y cerdas súper densas.',3),
-(4,'Refresco','Refresco sabor a cola negra 2lts',4),
-(5,'Snack Doritos Mega Queso','Hojuelas de maíz tostadas con sabor a queso',5)
+(1,'Desodorante','El Antitranspirante Roll Farmatodo mantiene su piel seca, dando protección continua.',55,1),
+(2,'Crema Dental','Protege tu salud bucal y la de toda tu familia, brindándoles la confianza que necesitan, manteniendo un aliento súper fresco por mucho más tiempo',10,2),
+(3,'Cepillo Dental','Proporciona una limpieza profunda y genera espuma superior al mismo tiempo. Su diseño innovador incluye un mango ergonómico y cerdas súper densas.',132,3),
+(4,'Refresco','Refresco sabor a cola negra 2lts',5,4),
+(5,'Snack Doritos Mega Queso','Hojuelas de maíz tostadas con sabor a queso',28,5)
 
 SET IDENTITY_INSERT B2B.TCProduct OFF;
 

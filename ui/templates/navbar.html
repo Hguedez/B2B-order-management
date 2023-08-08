@@ -1,0 +1,36 @@
+<div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">TechCo</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                  Productos
+                </a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/catalogue">Catalogo</a>
+                  <a class="dropdown-item" href="#">Disponibles</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Panel de control</a>
+                </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/orders">Mis pedidos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Inventario</a>
+              </li>
+          </ul>
+          <div class="d-flex">
+            <button class="btn btn-outline-dark" onclick="buyProducts()">
+                <i class="fas fa-shopping-cart"></i>
+                Cart
+                <span class="badge bg-dark text-white ml-1 rounded-pill-cart">0</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+</div>

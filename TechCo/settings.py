@@ -56,7 +56,7 @@ ROOT_URLCONF = 'TechCo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['ui/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
