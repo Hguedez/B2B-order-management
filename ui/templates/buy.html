@@ -18,8 +18,8 @@
         .rounded-pill-cart {
             border-radius: 50rem ;
         }
-        #orders-list > .card {
-            max-height: 150px;
+        #cart-list > .card {
+            max-height: 200px;
             overflow-y: auto;
         }
         .btn-pay{
@@ -52,26 +52,27 @@
         <h3 class="col-12 mt-3">Carrito</h3>
     </div>
     <div class="row">
-        <div id="orders-list" class="col-12 col-lg-7 col-md-7 d-flex flex-column align-items-center">
+        <div id="cart-list" class="col-12 col-lg-7 col-md-7 d-flex flex-column align-items-center">
         </div>
-        <div id="price-card" class="col-12 col-lg-4 col-md-4 mt-3">
+        <div id="price-card" class="col-12 col-lg-5 col-md-4 mt-3">
         </div>
     </div>
+    <br>
 </div>
 {% include 'footer.html' %}
 <script>
  
     let page_number = 1
-    let email = 'amelendez@tribuco.mx'
     let shopCart = JSON.parse(localStorage.getItem('cart'))
+    let order = {}
+    let cartItems = {}
     $( document ).ready(function() {
         getCartItems()
-
+        
     });
 
     function getCartItems(){
-        var ordersHTML = []
-        var orders = {}
+        var cartHTML = []
         var product = {}
         var priceHTML = ''
         var price = 0
@@ -79,16 +80,16 @@
             url: 'http://127.0.0.1:8000/get-cart-items/'+1,
             type: 'GET',
             success: function(response) {
-                orders = response.data
-                for(let ord in orders){
-                    price+=parseInt(orders[ord].Product.Price)
-                    product = orders[ord].Product
-                    ordersHTML[ord] = `
+                cartItems = response.data
+                for(let item in cartItems){
+                    price+=parseInt(cartItems[item].Price)
+                    cartHTML[item] = `
                     <div class="card col-12 mt-3">
                         <div class="card-body ">
-                            <h5 class="card-title">Producto: ${product.Product_Name}</h5>
-                            <p class="card-text">Descripcion: ${product.Description}</p>
-                            <p class="card-text">Cantidad: ${orders[ord].Cart_Quantity}</p>
+                            <h5 class="card-title">Producto: ${cartItems[item].FK_Product_Id__Product_Name}</h5>
+                            <p class="card-text">Descripcion: ${cartItems[item].FK_Product_Id__Description}</p>
+                            <p class="card-text">Cantidad: ${cartItems[item].Cart_Quantity}</p>
+                            <p class="card-text"><strong>Precio: ${cartItems[item].Price}$</strong></p>
                         </div>
                     </div>
                     `
@@ -98,11 +99,11 @@
                     <div class="card-body ">
                         <h4 class="card-title text-center mb-3">Resumen del pedido</h4>
                         <h5>Total a pagar: ${price}$</h5>
-                        <button type="button" class="btn btn-pay btn-block text-white">Pagar</button>
+                        <button type="button" class="btn btn-pay btn-block text-white" onclick="buyProducts()">Pagar</button>
                     </div>
                 </div>
                 `
-                $('#orders-list').append(ordersHTML);
+                $('#cart-list').append(cartHTML);
                 $('#price-card').append(priceHTML);
             },
             error: function(xhr, status, error) {
@@ -111,13 +112,44 @@
         });
     }
 
-    function addToCart(product_name){ 
-               
-        var cardItems = {productName: product_name};
-        cardItems = $('.rounded-pill-cart').text()
-        console.log($('.rounded-pill-cart').text())
-        localStorage.setItem('cart', JSON.stringify(cardItems));
+    function buyProducts(){ 
+        var order = []
+        for(let item in cartItems){
+            order.push({
+                "Order_Date": getTimeFormat(),
+                "Order_Quantity": cartItems[item].Cart_Quantity,
+                "FK_User_Id": cartItems[item].FK_User_Id,
+                "FK_Product_Id": cartItems[item].FK_Product_Id
+            })
+        } 
+        $.ajax({
+            url: 'http://127.0.0.1:8000/save-order',
+            type: 'POST',
+            data: JSON.stringify({"Order": order}),
+            contentType: 'application/json',
+            success: function(response) {
+                if(response.response == 'success'){
+                    swal(response.message, {
+                        icon: "success",
+                    });
+                    setTimeout(function() {
+                        window.location.reload()
+                    }, 2000);
+                }
+                else{
+                    swal(response.message, {
+                        icon: "error",
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                // handle error
+            }
+        });        
+        
     }
+
+    
     
 </script>
 </body>

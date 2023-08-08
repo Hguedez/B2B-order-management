@@ -6,6 +6,9 @@ from rest_framework.parsers import JSONParser
 import json
 from api.models.order import Order
 from api.models.user import User
+from api.models.product import Product
+from api.models.inventory import Inventory
+from api.models.shoppingcart import ShoppingCart
 from api.serializers import OrderSerializer
 from django.core.paginator import Paginator
 
@@ -63,9 +66,22 @@ def save_order(request):
         json_data = JSONParser().parse(request)
         orders = json_data.get('Order', [])
         for order_data in orders:
-            order_serializer = OrderSerializer(data=order_data)
-            if order_serializer.is_valid():
-                order_serializer.save()
+            # Get the product associated with the order
+            product = Product.objects.get(Product_Id=order_data['FK_Product_Id'])
+            # Get the inventory associated with the product
+            inventory = Inventory.objects.get(Inventory_Id=product.FK_Inventory_Id.Inventory_Id)
+            # Check if the order quantity is greater than the inventory quantity
+            if order_data['Order_Quantity'] > inventory.Quantity:
+                return JsonResponse({'response': 'error', 'message': 'La cantidad solicitada de '+product.Product_Name+' no está disponible en el inventario'}, safe=False)
+            else:
+                inventory.Quantity -= order_data['Order_Quantity']
+                inventory.save()
+                # Delete the shopping cart item associated with this order
+                ShoppingCart.objects.filter(FK_User_Id=order_data['FK_User_Id'], FK_Product_Id=order_data['FK_Product_Id']).delete()
+                # Finally save the order
+                order_serializer = OrderSerializer(data=order_data)
+                if order_serializer.is_valid():
+                    order_serializer.save()
         return JsonResponse({'response': 'success','message': 'Los pedidos han sido procesados exitosamente'}, safe=False)
     
 @csrf_exempt

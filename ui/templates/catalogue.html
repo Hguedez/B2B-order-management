@@ -44,25 +44,7 @@
     let user = JSON.parse(localStorage.getItem('userLogged'))
     $( document ).ready(function() {
         getAllProducts()
-        getCartNumber()
     });
-
-    function buyProducts(){
-        window.location.href = '/buy';
-    }
-
-    function getCartNumber(){
-        $.ajax({
-            url: 'http://127.0.0.1:8000/get-cart-total/'+1,
-            type: 'GET',
-            success: function(response) {
-                if(response.data != null && response.data > 0)$('.rounded-pill-cart').text(response.data)
-            },
-            error: function(xhr, status, error) {
-                // handle error
-            }
-        });
-    }
 
     function getAllProducts(){
         var productsHTML = []
@@ -92,7 +74,7 @@
                                 </div>
                             </div>
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto ${disabledCss}" href="#" onclick="addToCart('${products[prd].Product_Id}')">Agregar al carrito</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto ${disabledCss}" href="#" onclick="addToCart('${products[prd].Product_Id}'); return false;">Agregar al carrito</a></div>
                             </div>
                         </div>
                     </div> 
