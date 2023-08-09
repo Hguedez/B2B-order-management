@@ -97,7 +97,7 @@ Para obtener una copia local del proyecto, siga los siguientes pasos.
 4. Abre SQL Server Management Studio
 5. Conéctese usando la autenticación de Windows
 6. Haga click en `New Query`
-7. Copie y pegue el contenido del archivo `Creates.sql` en el manejador de base de datos que se encuentra en la carpeta `db/Creates.sql` y ejecute el SQL
+7. Copie y pegue el contenido del archivo `db/Creates.sql` en el manejador de base de datos y ejecute el SQL
 8. Copie el contenido de `Inserts.sql` para la base de datos `TechCo` y ejecute el SQL
 9. Ejecute el comando `python manage.py runserver` dentro de la carpeta principal del proyecto para poder desplegarlo en la web
 
