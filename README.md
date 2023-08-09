@@ -71,7 +71,7 @@ Para obtener una copia local del proyecto, siga los siguientes pasos.
 
 ### Requisitos Previos
 
-* pip
+* Instalar python y luego ejecutar pip
   ```sh
     python get-pip.py
   ```
