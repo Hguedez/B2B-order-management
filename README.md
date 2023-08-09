@@ -87,11 +87,9 @@ Para obtener una copia local del proyecto, siga los siguientes pasos.
    ```sh
    git clone https://github.com/Hguedez/B2B-order-management.git
    ```
-2. Instalar 
+2. Instalar requirements.txt
    ```sh
-    pip install djangorestframework
-    pip install mssql-django
-    pip install requests
+   pip install -r requirements.txt
    ```
 3. Ejecute `python manage.py migrate` para la migracion de las tablas auth y `python manage.py createsuperuser` para crear tu usuario
 4. Abre SQL Server Management Studio
@@ -100,6 +98,12 @@ Para obtener una copia local del proyecto, siga los siguientes pasos.
 7. Copie y pegue el contenido del archivo `db/Creates.sql` en el manejador de base de datos y ejecute el SQL
 8. Copie el contenido de `Inserts.sql` para la base de datos `TechCo` y ejecute el SQL
 9. Ejecute el comando `python manage.py runserver` dentro de la carpeta principal del proyecto para poder desplegarlo en la web
+10. En caso de tener algun problema de dependencias instalar:
+```sh
+pip install djangorestframework
+pip install mssql-django
+pip install requests
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
