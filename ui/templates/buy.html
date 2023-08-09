@@ -22,7 +22,7 @@
             border-radius: 50rem ;
         }
         #cart-list > .card {
-            max-height: 200px;
+            max-height: 240px;
             overflow-y: auto;
         }
         .btn-pay{
@@ -45,6 +45,9 @@
             transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
             text-transform: unset;
             box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%) !important;
+        }
+        .fa-trash-alt{
+            cursor: pointer;
         }
     </style>
 </head>
@@ -94,6 +97,7 @@
                             <p class="card-text">Descripcion: ${cartItems[item].FK_Product_Id__Description}</p>
                             <p class="card-text">Cantidad: ${cartItems[item].Cart_Quantity}</p>
                             <p class="card-text"><strong>Precio: ${cartItems[item].Price}$</strong></p>
+                            <div class="w-100 text-center"><i class="far fa-trash-alt" onclick="removeFromCart(${cartItems[item].FK_Product_Id},${cartItems[item].FK_User_Id})"></i></div>
                         </div>
                     </div>
                     `
@@ -153,6 +157,46 @@
         
     }
 
+    function removeFromCart(productId, userId){
+        var cart = {
+            "FK_User_Id": userId,
+            "FK_Product_Id": productId
+        }
+        swal({
+          title: "Esta seguro?",
+          text: 'Eliminara este producto de su carrito de compras',
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        }).then((changeStatus) => {
+            if (changeStatus) {
+                $.ajax({
+                    url: 'http://127.0.0.1:8000/remove-from-cart',
+                    type: 'POST',
+                    data: JSON.stringify({"Cart": cart}),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        if(response.response == 'success'){
+                            swal(response.message, {
+                                icon: "success",
+                            });
+                            setTimeout(function() {
+                                window.location.reload()
+                            }, 1500);
+                        }
+                        else{
+                            swal(response.message, {
+                                icon: "error",
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // handle error
+                    }
+                }); 
+            }
+        })    
+    }
     
     
 </script>
