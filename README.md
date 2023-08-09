@@ -126,7 +126,7 @@ Unit tests
 
 <!-- ACKNOWLEDGMENTS -->
 ## Diagrama entidad relacion
-<a href="[erd-diagram]" target="_blank">ERD</a>
+<a href="https://drive.google.com/file/d/1a_1CZyfjzjZubjyYOzGKUMxy6aDCnslg/view?usp=sharing" target="_blank">ERD</a>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
