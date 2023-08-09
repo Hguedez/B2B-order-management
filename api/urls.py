@@ -24,5 +24,6 @@ urlpatterns = [
     path('get-cart-total/<int:user_id>', shoppingcart_views.get_cart_quantity),
     path('get-cart-items/<int:user_id>', shoppingcart_views.get_cart_items),
 
-    path('sign-in', user_views.sign_in)
+    path('sign-in', user_views.sign_in),
+    path('sign_out/', user_views.sign_out, name='sign_out'),
 ]

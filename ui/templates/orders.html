@@ -29,6 +29,9 @@
     <div id="orders-list" class="row d-flex justify-content-center">
         <h3 class="w-75 mt-3">Mis pedidos</h3>
     </div>
+    <div class="row d-flex justify-content-center my-2">
+        <div class="pagination"></div>
+    </div>
 </div>
 {% include 'footer.html' %}
 <script>
@@ -38,16 +41,19 @@
     let shopCart = JSON.parse(localStorage.getItem('cart'))
     $( document ).ready(function() {
         $('.nav-item.orders').addClass('active')
-        getUserOrders()
+        getUserOrders(page_number)
 
     });
 
-    function getUserOrders(){
+    function getUserOrders(page){
         var ordersHTML = []
         var orders = {}
         var product = {}
+        var paginationHTML = []
+        $('#orders-list').empty();
+        $('.pagination').empty();
         $.ajax({
-            url: 'http://127.0.0.1:8000/get-user-orders/'+page_number+'/user/'+user.id,
+            url: 'http://127.0.0.1:8000/get-user-orders/'+page+'/user/'+user.id,
             type: 'GET',
             success: function(response) {
                 orders = response.data
@@ -63,7 +69,20 @@
                     </div>
                     `
                 }
+                for(var index = 0; index < response.num_pages; index++){
+                    if(index+1 == page){
+                        paginationHTML[index] = `
+                        <a class="active" href="#" onclick="(getUserOrders(${index+1}))">${index+1}</a>
+                        `
+                    }
+                    else{
+                        paginationHTML[index] = `
+                        <a href="#" onclick="(getUserOrders(${index+1}))">${index+1}</a>
+                        `
+                    }
+                }
                 $('#orders-list').append(ordersHTML);
+                $('.pagination').append(paginationHTML);
             },
             error: function(xhr, status, error) {
                 // handle error
