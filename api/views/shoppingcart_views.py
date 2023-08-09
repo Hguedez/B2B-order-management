@@ -75,17 +75,20 @@ def get_cart_items(request, user_id):
         )
         
         return JsonResponse({'response': 'success', 'data': list(cart_items)}, safe=False)
-    
-# def get_cart_items(request, user_id):
-#     """
-#     Get the number of items added to the shopping cart
-#     Args:
-#         request (any): HTTP request object
-#         user_id (int): primary key (id) of the user you want to get the cart from
-#     Returns:
-#         result (JsonResponse)
-#     """
-#     if request.method == 'GET':
-#         cart = ShoppingCart.objects.filter(FK_User_Id=user_id).values('FK_Product_Id').annotate(total_quantity=Sum('Cart_Quantity'))
-#         return JsonResponse({'response': 'success', 'data': list(cart)}, safe=False)
+
+@csrf_exempt    
+def remove_cart_item(request):
+    """
+    remove a product from the user shopping cart
+    Args:
+        request (any): HTTP request object
+        product_id (int): primary key (id) of the product you want to delete the cart from
+        user_id (int): primary key (id) of the user you want to delete the cart from
+    Returns:
+        result (JsonResponse)
+    """
+    if request.method == 'POST':
+        json_data = JSONParser().parse(request)
+        ShoppingCart.objects.filter(FK_User_Id=json_data['Cart']['FK_User_Id'], FK_Product_Id=json_data['Cart']['FK_Product_Id']).delete()
+        return JsonResponse({'response': 'success', 'message': 'Producto eliminado exitosamente del carrito'}, safe=False)
     
