@@ -125,7 +125,8 @@ Unit tests
 
 
 <!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
+## Diagrama entidad relacion
+<a href="[erd-diagram]" target="_blank">ERD</a>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -139,3 +140,4 @@ Unit tests
 [sqlserver-url]: https://www.microsoft.com/en-us/sql-server/sql-server-downloads
 [django-shield]: https://img.shields.io/badge/DJANGO-4.2-white?style=for-the-badge&logo=django
 [django-url]: https://www.djangoproject.com/download/
+[erd-diagram]: https://drive.google.com/file/d/1a_1CZyfjzjZubjyYOzGKUMxy6aDCnslg/view?usp=sharing
