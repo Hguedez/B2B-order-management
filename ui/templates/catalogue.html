@@ -39,6 +39,9 @@
     <div id="product-list" class="row row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-between">
         
     </div>
+    <div class="row d-flex justify-content-center mb-2">
+        <div class="pagination"></div>
+    </div>
 </div>
 {% include 'footer.html' %}
 <script>
@@ -47,16 +50,19 @@
     let user = JSON.parse(localStorage.getItem('userLogged'))
     $( document ).ready(function() {
         $('.nav-item.products').addClass('active')
-        getAllProducts()
+        getAllProducts(page_number)
     });
 
-    function getAllProducts(){
+    function getAllProducts(page){
         var productsHTML = []
         var products = {}
         var inventory = {}
         var disabledCss = ''
+        var paginationHTML = []
+        $('#product-list').empty();
+        $('.pagination').empty();
         $.ajax({
-            url: 'http://127.0.0.1:8000/get-all-products/'+page_number,
+            url: 'http://127.0.0.1:8000/get-all-products/'+page,
             type: 'GET',
             success: function(response) {
                 products = response.data
@@ -84,7 +90,20 @@
                     </div> 
                     `
                 }
+                for(var index = 0; index < response.num_pages; index++){
+                    if(index+1 == page){
+                        paginationHTML[index] = `
+                        <a class="active" href="#" onclick="(getAllProducts(${index+1}))">${index+1}</a>
+                        `
+                    }
+                    else{
+                        paginationHTML[index] = `
+                        <a href="#" onclick="(getAllProducts(${index+1}))">${index+1}</a>
+                        `
+                    }
+                }
                 $('#product-list').append(productsHTML);
+                $('.pagination').append(paginationHTML);
             },
             error: function(xhr, status, error) {
                 // handle error
