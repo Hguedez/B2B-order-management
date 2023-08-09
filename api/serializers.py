@@ -32,12 +32,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'User_Id', 
-            'First_Name', 
-            'Family_Name', 
-            'Telephone',
-            'Email',
-            'Rol'
+            'id', 
+            'username',
+            'first_name', 
+            'last_name', 
+            'email'
         )
 
 class OrderSerializer(serializers.ModelSerializer):

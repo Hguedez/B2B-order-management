@@ -11,6 +11,9 @@
             --main-color: #1d3557;
             --main-hover: #457b9d;
         }
+        body{
+            font-family: var(--main-font);
+        }
         .color-tc-primary{
             text-decoration: none !important;
             color: var(--main-color);
@@ -43,6 +46,7 @@
     let page_number = 1
     let user = JSON.parse(localStorage.getItem('userLogged'))
     $( document ).ready(function() {
+        $('.nav-item.products').addClass('active')
         getAllProducts()
     });
 
@@ -74,7 +78,7 @@
                                 </div>
                             </div>
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto ${disabledCss}" href="#" onclick="addToCart('${products[prd].Product_Id}'); return false;">Agregar al carrito</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto ${disabledCss}" href="#" onclick="addToCart(${products[prd].Product_Id}); return false;">Agregar al carrito</a></div>
                             </div>
                         </div>
                     </div> 
@@ -93,7 +97,7 @@
         var body = {
             "Cart": {
                 "Cart_Quantity": 1,
-                "FK_User_Id": 1,
+                "FK_User_Id": user.id,
                 "FK_Product_Id": productId
             }
         }

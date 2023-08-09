@@ -10,4 +10,4 @@ class ShoppingCart(models.Model):
 
     class Meta:
         managed = True
-        db_table = "[B2B].[TCShopping_Cart]"
+        db_table = "[TCShopping_Cart]"

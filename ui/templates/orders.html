@@ -11,6 +11,9 @@
             --main-color: #1d3557;
             --main-hover: #457b9d;
         }
+        body{
+            font-family: var(--main-font);
+        }
         .color-tc-primary{
             text-decoration: none !important;
             color: var(--main-color);
@@ -31,9 +34,10 @@
 <script>
  
     let page_number = 1
-    let email = 'hileryguedez@gmail.com'
+    let user = JSON.parse(localStorage.getItem('userLogged'))
     let shopCart = JSON.parse(localStorage.getItem('cart'))
     $( document ).ready(function() {
+        $('.nav-item.orders').addClass('active')
         getUserOrders()
 
     });
@@ -43,7 +47,7 @@
         var orders = {}
         var product = {}
         $.ajax({
-            url: 'http://127.0.0.1:8000/get-user-orders/'+page_number+'/user/'+email,
+            url: 'http://127.0.0.1:8000/get-user-orders/'+page_number+'/user/'+user.id,
             type: 'GET',
             success: function(response) {
                 orders = response.data
@@ -72,7 +76,6 @@
         var cardItems = {productName: product_name};
         cardItems = $('.rounded-pill-cart').text()
         console.log($('.rounded-pill-cart').text())
-        localStorage.setItem('cart', JSON.stringify(cardItems));
     }
     
 </script>

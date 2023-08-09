@@ -11,4 +11,4 @@ class Order(models.Model):
 
     class Meta:
         managed = True
-        db_table = "[B2B].[TCOrder]"
+        db_table = "[TCOrder]"

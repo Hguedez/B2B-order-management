@@ -12,7 +12,7 @@ from api.models.shoppingcart import ShoppingCart
 from api.serializers import OrderSerializer
 from django.core.paginator import Paginator
 
-def get_user_orders(request, page_number, user_email):
+def get_user_orders(request, page_number, user_id):
     """
     Get all the orders from a user
     Args:
@@ -25,8 +25,7 @@ def get_user_orders(request, page_number, user_email):
     if request.method == 'GET':
         page = request.GET.get('page', page_number)
         items_per_page = 5
-        user = User.objects.filter(Email=user_email).first()
-        orders = Order.objects.select_related('FK_User_Id', 'FK_Product_Id').filter(FK_User_Id=user.User_Id)
+        orders = Order.objects.select_related('FK_User_Id', 'FK_Product_Id').filter(FK_User_Id=user_id)
         paginator = Paginator(orders, items_per_page)
         page_orders = paginator.get_page(page)
         orders_serializer = OrderSerializer(page_orders, many=True)

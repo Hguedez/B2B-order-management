@@ -10,4 +10,4 @@ class Product(models.Model):
 
     class Meta:
         managed = True
-        db_table = "[B2B].[TCProduct]"
+        db_table = "[TCProduct]"

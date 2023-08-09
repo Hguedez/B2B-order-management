@@ -1,5 +1,5 @@
 from django.urls import path
-from api.views import product_views, inventory_views, order_views, shoppingcart_views
+from api.views import product_views, inventory_views, order_views, shoppingcart_views, user_views
 
 urlpatterns = [
     path('get-all-products/<int:page_number>', product_views.get_all_products),
@@ -14,7 +14,7 @@ urlpatterns = [
     path('edit-inventory', inventory_views.update_inventory),
     path('delete-inventory/<int:inventory_id>', inventory_views.remove_inventory),
 
-    path('get-user-orders/<int:page_number>/user/<str:user_email>', order_views.get_user_orders),
+    path('get-user-orders/<int:page_number>/user/<str:user_id>', order_views.get_user_orders),
     path('get-order/<int:order_id>', order_views.get_specific_order),
     path('save-order', order_views.save_order),
     path('edit-order', order_views.update_order),
@@ -22,5 +22,7 @@ urlpatterns = [
 
     path('add-to-cart', shoppingcart_views.add_to_cart),
     path('get-cart-total/<int:user_id>', shoppingcart_views.get_cart_quantity),
-    path('get-cart-items/<int:user_id>', shoppingcart_views.get_cart_items)
+    path('get-cart-items/<int:user_id>', shoppingcart_views.get_cart_items),
+
+    path('sign-in', user_views.sign_in)
 ]
