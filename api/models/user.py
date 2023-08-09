@@ -1,14 +1,13 @@
 from django.db import models
 
 class User(models.Model):
-    User_Id = models.AutoField(primary_key=True)
-    First_Name = models.CharField(max_length=100)
-    Family_Name = models.CharField(max_length=100)
-    Telephone = models.CharField(max_length=100)
-    Email = models.CharField(max_length=255)
-    Password = models.CharField(max_length=255)
-    Rol = models.CharField(max_length=50)
+    id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=150)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
+    password = models.CharField(max_length=128)
 
     class Meta:
         managed = True
-        db_table = "[B2B].[TCUser]"
+        db_table = "[auth_user]"

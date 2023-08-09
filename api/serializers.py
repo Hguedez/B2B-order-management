@@ -4,6 +4,7 @@ from api.models.product import Product
 from api.models.inventory import Inventory
 from api.models.user import User
 from api.models.order import Order
+from api.models.shoppingcart import ShoppingCart
 
 class InventorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,6 +23,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'Product_Id', 
             'Product_Name', 
             'Description', 
+            'Price',
             'FK_Inventory_Id',
             'Inventory'
         )
@@ -30,12 +32,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'User_Id', 
-            'First_Name', 
-            'Family_Name', 
-            'Telephone',
-            'Email',
-            'Rol'
+            'id', 
+            'username',
+            'first_name', 
+            'last_name', 
+            'email'
         )
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -48,6 +49,21 @@ class OrderSerializer(serializers.ModelSerializer):
             'Order_Id', 
             'Order_Date', 
             'Order_Quantity', 
+            'FK_User_Id',
+            'FK_Product_Id',
+            'User',
+            'Product'
+        )
+
+class ShoppingCartSerializer(serializers.ModelSerializer):
+    User = UserSerializer(source='FK_User_Id', read_only=True)
+    Product = ProductSerializer(source='FK_Product_Id', read_only=True)
+
+    class Meta:
+        model = ShoppingCart
+        fields = (
+            'Cart_Id', 
+            'Cart_Quantity', 
             'FK_User_Id',
             'FK_Product_Id',
             'User',

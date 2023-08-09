@@ -1,11 +1,8 @@
 import os
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import status
 from rest_framework.parsers import JSONParser
-import json
 from api.models.product import Product
 from api.serializers import ProductSerializer
 from django.core.paginator import Paginator
@@ -22,7 +19,8 @@ def get_all_products(request, page_number):
     if request.method == 'GET':
         page = request.GET.get('page', page_number)
         items_per_page = 5
-        products = Product.objects.select_related('FK_Inventory_Id').all()
+        products = Product.objects.prefetch_related('FK_Inventory_Id').all()
+        print(products.query)
         paginator = Paginator(products, items_per_page)
         page_products = paginator.get_page(page)
         products_serializer = ProductSerializer(page_products, many=True)
@@ -97,7 +95,7 @@ def update_product(request):
     """
     if request.method == 'PUT':
         json_data = JSONParser().parse(request)
-        Product.objects.filter(Product_Id=json_data['Product']['Product_Id']).update(Product_Name=json_data['Product']['Product_Name'],Description=json_data['Product']['Description'],FK_Inventory_Id=json_data['Product']['FK_Inventory_Id'])        
+        Product.objects.filter(Product_Id=json_data['Product']['Product_Id']).update(Product_Name=json_data['Product']['Product_Name'],Description=json_data['Product']['Description'],FK_Inventory_Id=json_data['Product']['FK_Inventory_Id'],Price=json_data['Product']['Price'])        
         return JsonResponse({'response': 'success','message': 'Producto actualizado exitosamente'}, safe=False)
 
 @csrf_exempt
@@ -117,3 +115,4 @@ def remove_product(request, product_id):
             return JsonResponse({'response': 'success', 'message': 'Producto eliminado existosamente'}, safe=False)
         except Product.DoesNotExist:
             return JsonResponse({'response': 'error', 'message': 'Hubo un error intente nuevamente'}, safe=False)
+        

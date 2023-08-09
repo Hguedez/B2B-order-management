@@ -7,4 +7,4 @@ class Inventory(models.Model):
 
     class Meta:
         managed = True
-        db_table = "[B2B].[TCInventory]"
+        db_table = "[TCInventory]"

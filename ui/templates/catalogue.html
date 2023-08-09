@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'header.html' %}
+    <title>Catalogue</title>
+    <style>
+        :root {
+            --main-font: 'Nunito Sans', sans-serif;
+            --main-color: #1d3557;
+            --main-hover: #457b9d;
+        }
+        body{
+            font-family: var(--main-font);
+        }
+        .color-tc-primary{
+            text-decoration: none !important;
+            color: var(--main-color);
+        }
+        .rounded-pill-cart {
+            border-radius: 50rem ;
+        }
+    </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div>
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4">Compra desde la comodidad de tu hogar </h1>
+            </div>
+        </div>
+    </header>
+</div>
+
+<div class="container-fluid px-4 px-lg-5 mt-5">
+    <div id="product-list" class="row row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-between">
+        
+    </div>
+</div>
+{% include 'footer.html' %}
+<script>
+ 
+    let page_number = 1
+    let user = JSON.parse(localStorage.getItem('userLogged'))
+    $( document ).ready(function() {
+        $('.nav-item.products').addClass('active')
+        getAllProducts()
+    });
+
+    function getAllProducts(){
+        var productsHTML = []
+        var products = {}
+        var inventory = {}
+        var disabledCss = ''
+        $.ajax({
+            url: 'http://127.0.0.1:8000/get-all-products/'+page_number,
+            type: 'GET',
+            success: function(response) {
+                products = response.data
+                for(let prd in products){
+                    inventory = products[prd].Inventory 
+                    if(inventory.Quantity == 0)disabledCss = 'disabled'
+                    else disabledCss = ''                   
+                    productsHTML[prd] = `
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder">${products[prd].Product_Name}</h5>
+                                    <div class="d-flex justify-content-center small mb-2">
+                                        Solo quedan <span class="text-danger mx-1"> ${inventory.Quantity} </span> disponibles
+                                    </div>
+                                    ${products[prd].Price}$
+                                </div>
+                            </div>
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto ${disabledCss}" href="#" onclick="addToCart(${products[prd].Product_Id}); return false;">Agregar al carrito</a></div>
+                            </div>
+                        </div>
+                    </div> 
+                    `
+                }
+                $('#product-list').append(productsHTML);
+            },
+            error: function(xhr, status, error) {
+                // handle error
+            }
+        });
+    }
+
+    function addToCart(productId){ 
+        var cartNumber = $('.rounded-pill-cart').text();
+        var body = {
+            "Cart": {
+                "Cart_Quantity": 1,
+                "FK_User_Id": user.id,
+                "FK_Product_Id": productId
+            }
+        }
+        $.ajax({
+            url: 'http://127.0.0.1:8000/add-to-cart',
+            type: 'POST',
+            data: JSON.stringify(body),
+            contentType: 'application/json',
+            success: function(response) {
+                if(response.response == 'error'){
+                    swal(response.message, {
+                        icon: "error",
+                    });
+                }
+                else{
+                    cartNumber = parseInt(cartNumber)
+                    cartNumber++
+                    $('.rounded-pill-cart').text(cartNumber)
+                }
+            },
+            error: function(xhr, status, error) {
+                // handle error
+            }
+        });      
+        //localStorage.setItem('cart', JSON.stringify(cardItems));
+    }
+    
+</script>
+</body>
+</html>
