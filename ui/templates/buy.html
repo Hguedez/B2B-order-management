@@ -69,7 +69,7 @@
 <script>
  
     let page_number = 1
-    let shopCart = JSON.parse(localStorage.getItem('cart'))
+    let user = JSON.parse(localStorage.getItem('userLogged'))
     let order = {}
     let cartItems = {}
     $( document ).ready(function() {
@@ -84,7 +84,7 @@
         var priceHTML = ''
         var price = 0
         $.ajax({
-            url: 'http://127.0.0.1:8000/get-cart-items/'+1,
+            url: 'http://127.0.0.1:8000/get-cart-items/'+user.id,
             type: 'GET',
             success: function(response) {
                 cartItems = response.data
